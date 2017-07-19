@@ -1,8 +1,10 @@
 package hackerrank.w34;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MaxGcdAndSum {
 	private HashMap<NumPair, Integer> gcdMap;
@@ -13,30 +15,37 @@ public class MaxGcdAndSum {
 
 	public int maximumGcdAndSum(int[] A, int[] B) {
         // Complete this function
-        Arrays.sort(A);
-        Arrays.sort(B);
+		Set<NumPair> pairs = new TreeSet<>();		
+		for(int i=0; i<A.length; i++) {
+			for(int j=0; j<B.length; j++) {
+				pairs.add(new NumPair(A[i],B[j]));
+			}
+		}
+		
         int maxGcd = Integer.MIN_VALUE;
         int maxNum1 = -1;
         int maxNum2 = -1;
-        int i = A.length-1;
-        int j = B.length-1;
-        while(i>=0 && j>=0) {
-            int gcd = gcd(new NumPair(A[i],B[j]));
-            if((maxGcd < gcd) || (maxGcd == gcd && (maxNum1+maxNum2)<(A[i]+B[j]))) {
+
+		Iterator<NumPair> itr = pairs.iterator();
+		while(itr.hasNext()) {
+			NumPair cur = itr.next();
+			if(maxGcd!=-1 && (cur.num1*cur.num2)<maxGcd) {
+				break;
+			}
+			if(Math.min(cur.num1, cur.num2)<maxGcd) {
+				// skip
+				continue;
+			}
+
+			int gcd = gcd(cur);
+			System.out.println("gcd "+cur.num1+" "+cur.num2+ " - "+gcd);
+            if((maxGcd < gcd) || (maxGcd == gcd && (maxNum1+maxNum2)<(cur.num1+cur.num2))) {
                 maxGcd = gcd;
-                maxNum1 = A[i];
-                maxNum2 = B[j];
-                if(maxGcd == Math.max(A[i], B[j])) {
-                    break;
-                }
+                maxNum1 = cur.num1;
+                maxNum2 = cur.num2;
             }
-            if (A[i]==Math.max(A[i],B[j])) {
-                i--;
-            } else {
-                j--;
-            }
-        }
-        return maxNum1+maxNum2;
+		}
+		return maxNum1+maxNum2;		
     }
 
 	private int gcd(NumPair pair) {
@@ -72,7 +81,7 @@ public class MaxGcdAndSum {
 		System.out.println(res);
 	}
 
-	private static class NumPair {
+	private static class NumPair implements Comparable<NumPair>{
         int num1;
         int num2;
         
@@ -89,5 +98,12 @@ public class MaxGcdAndSum {
             this.num1=a;
             this.num2=b;
         }
+
+		@Override
+		public int compareTo(NumPair o) {
+			long one = ((long) this.num1)*this.num2;
+			long two = ((long) o.num1)*o.num2;
+			return two>one ? 1 : -1;
+		}
     }
 }
