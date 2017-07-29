@@ -72,7 +72,7 @@ public class MaxGcdAndSumTest {
 	public void test8() {
 		int[] a = {2, 7, 25, 26, 8, 2, 25, 18, 10, 5};
 		int[] b = {373, 102, 48, 161, 145, 262, 118, 91, 71, 155, 163, 31};
-		Assert.assertEquals(413, src.maximumGcdAndSum(a, b));
+		Assert.assertEquals(117, src.maximumGcdAndSum(a, b));
 	}
 
 }

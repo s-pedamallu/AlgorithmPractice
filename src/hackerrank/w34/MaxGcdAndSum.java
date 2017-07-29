@@ -37,8 +37,8 @@ public class MaxGcdAndSum {
 				continue;
 			}
 
-			int gcd = gcd(cur);
-			System.out.println("gcd "+cur.num1+" "+cur.num2+ " - "+gcd);
+			int gcd = gcd(cur, maxGcd);
+//			System.out.println("gcd "+cur.num1+" "+cur.num2+ " - "+gcd);
             if((maxGcd < gcd) || (maxGcd == gcd && (maxNum1+maxNum2)<(cur.num1+cur.num2))) {
                 maxGcd = gcd;
                 maxNum1 = cur.num1;
@@ -48,18 +48,49 @@ public class MaxGcdAndSum {
 		return maxNum1+maxNum2;		
     }
 
-	private int gcd(NumPair pair) {
+	public int algo2(int[] A, int[] B) {
+		// Complete this function
+		int maxGcd = Integer.MIN_VALUE;
+		int maxSum = Integer.MIN_VALUE;
+		for (int i = 0; i < A.length; i++) {
+			for (int j = 0; j < B.length; j++) {
+				int g = gcd(A[i], B[j]);
+				if (g >= maxGcd) {
+					maxSum = (g > maxGcd) ? (A[i] + B[j]) : Math.max(maxSum, A[i] + B[j]);
+					maxGcd = g;
+				}
+			}
+		}
+		return maxSum;
+	}
+
+	int gcd(int a, int b) {
+		if (a == 0 || b == 0) {
+			return 0;
+		}
+		if (a == b) {
+			return a;
+		}
+		return (a > b) ? gcd(a - b, b) : gcd(a, b - a);
+	}
+
+	private int gcd(NumPair pair, int tryUntil) {
         if(gcdMap.containsKey(pair)) {
             return gcdMap.get(pair);
         }
         int max = Math.max(pair.num1, pair.num2);
         int min = Math.min(pair.num1, pair.num2);
+
+        if(min<tryUntil) {
+        	return -1;
+        }
+        
         int remainder = max%min;
         if (remainder == 0) {
             gcdMap.put(pair, min);
             return min;
         } else {
-            int ans = gcd(new NumPair(min, remainder));
+            int ans = gcd(new NumPair(min, remainder), tryUntil);
             gcdMap.put(pair, ans);
             return ans;
         }
