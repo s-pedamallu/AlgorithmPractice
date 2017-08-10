@@ -26,4 +26,19 @@ public class SortedSerialNumberTest {
 	public void test3() {
 		assertEquals(15, src.findRank("VIEW"));
 	}
+
+	@Test
+	public void test5() {
+		assertEquals(9, src.findRank("IVEW"));
+	}
+	
+	@Test
+	public void test4() {
+		assertEquals(51, src.findRank("AaBbCc"));
+	}
+
+	@Test
+	public void test6() {
+		assertEquals(318057, src.findRank("ZCSFLVHXRYJQKWABGT"));
+	}
 }

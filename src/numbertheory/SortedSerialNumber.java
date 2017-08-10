@@ -7,44 +7,41 @@ import java.util.Map;
 public class SortedSerialNumber {
 
     public static final int MOD = 1000003;
-	public int findRank(String a) {
-		a = a.toLowerCase();
-	    char[] arr = new char[a.length()];
-	    for(int i=0; i<a.length(); i++) {
-	        arr[i] = a.charAt(i);
-	    }
-	    Arrays.sort(arr);
-	    Map<Character, Integer> oMap = new HashMap<>();
-	    Map<Character, Integer> sMap = new HashMap<>();
-	    for(int i=0; i<a.length(); i++) {
-	        oMap.put(a.charAt(i), i);
-	        sMap.put(arr[i], i);
-	    }
+    private static Map<Integer, Integer> factMap = new HashMap<>();
 
-        int ans = 1;
-        int ref = 0;
-        for(int i=0; i<a.length(); i++) {
-            int m = oMap.get(arr[ref]);
-//            int n = 
-            if(i<m) {
-                int n = sMap.get(a.charAt(i));
-                int remLength = a.length()-i-1;
-                ans+= (n-ref) * numPerms(remLength);
-                ans %= MOD;
-            } else {
-            	ref++;
-            }
-        }
-        return ans;
+	public int findRank(String s) {
+		int ans = 1;
+		factMap.put(1, 1);
+		for(int i=0; i<s.length(); i++) {
+			char[] arr = s.substring(i).toCharArray();
+			Arrays.sort(arr);
+			int times = charPos(arr, s.charAt(i));
+			int remLength = s.length()-i-1;
+			if(times == 0 || remLength==0) {
+				continue;
+			}
+			int add = times*numPerms(remLength);
+			ans=(ans+add)%MOD;
+		}
+		return ans;
+	}
+
+	private int charPos(char[] arr, char c) {
+		for(int i=0; i<arr.length; i++) {
+			if(arr[i]==c){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private int numPerms(int a) {
-		if(a<1) {
-			return 0;
-		} else if(a==1) {
-			return 1;
+		if(factMap.containsKey(a)) {
+			return factMap.get(a);
 		} else {
-			return a*(a-1);
+			int result = (a*numPerms(a-1))%MOD;
+			factMap.put(a, result);
+			return result;
 		}
 	}
 }
