@@ -11,12 +11,13 @@ import org.junit.Test;
 
 import iterators.BSTIterator.TreeNode;
 
+import testhelper.TestTreeHelper;
 public class BSTIteratorTest {
 
 	@Test
 	public void test1() {
 		Integer[] arr = { 10, 4, null, 1, 7, null, 3, 6, 8, 2, null, 5, null, null, 9 };
-		TreeNode testCase = buildTreeFromArray(arr);
+		TreeNode testCase = TestTreeHelper.buildTreeFromArray(arr);
 		BSTIterator src = new BSTIterator(testCase);
 		int[] expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		List<Integer> actual = new ArrayList<>();
@@ -30,7 +31,7 @@ public class BSTIteratorTest {
 	@Test
 	public void test2() {
 		Integer[] arr = { 4 };
-		TreeNode testCase = buildTreeFromArray(arr);
+		TreeNode testCase = TestTreeHelper.buildTreeFromArray(arr);
 		BSTIterator src = new BSTIterator(testCase);
 		int[] expected = { 4 };
 		List<Integer> actual = new ArrayList<>();
@@ -43,7 +44,7 @@ public class BSTIteratorTest {
 	@Test
 	public void test3() {
 		Integer[] arr = { 3, 1, 4 };
-		TreeNode testCase = buildTreeFromArray(arr);
+		TreeNode testCase = TestTreeHelper.buildTreeFromArray(arr);
 		BSTIterator src = new BSTIterator(testCase);
 		int[] expected = { 1, 3, 4 };
 		List<Integer> actual = new ArrayList<>();
@@ -56,7 +57,7 @@ public class BSTIteratorTest {
 	@Test
 	public void test4() {
 		Integer[] arr = { 10, 4, null, 1, 7, null, 3, 6, 8, 2, null, 5, null, null, 9 };
-		TreeNode testCase = buildTreeFromArray(arr);
+		TreeNode testCase = TestTreeHelper.buildTreeFromArray(arr);
 		BSTIterator src = new BSTIterator(testCase);
 		int[] expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		int count = 0;
@@ -78,37 +79,4 @@ public class BSTIteratorTest {
 		}
 	}
 
-	private TreeNode buildTreeFromArray(Integer[] arr) {
-		if (arr == null || arr.length == 0) {
-			return null;
-		}
-		TreeNode root = null;
-		for (Integer i : arr) {
-			if (i == null) {
-				continue;
-			} else if (root == null) {
-				root = new TreeNode(i);
-			} else {
-				insertIntoBST(i, root);
-			}
-		}
-		return root;
-	}
-
-	private TreeNode insertIntoBST(int n, TreeNode root) {
-		if (n < root.val) {
-			if (root.left == null) {
-				root.left = new TreeNode(n);
-			} else {
-				insertIntoBST(n, root.left);
-			}
-		} else {
-			if (root.right == null) {
-				root.right = new TreeNode(n);
-			} else {
-				insertIntoBST(n, root.right);
-			}
-		}
-		return root;
-	}
 }
