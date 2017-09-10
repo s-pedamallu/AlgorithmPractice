@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,43 +12,60 @@ import java.util.Set;
 
 public class CutTrees {
 
+
 	public int cutOffTree(List<List<Integer>> forest) {
+		long start = System.currentTimeMillis();
 		int ans = 0;
-		Node cur = getMin(forest, 0, 0);
-		int val = getVal(forest, cur.r, cur.c);
-		while (val > 1) {
+        List<Integer> nums = new ArrayList<>();        
+        sortNumbers(forest, nums);
+        int rpos = 0;
+        int cpos = 0;
+		for(int i=0; i<nums.size(); i++) {
+			Node cur = getNode(forest, rpos, cpos, nums.get(i));
+			if(cur == null) {
+				break;
+			}
 			ans += cur.steps;
 			List<Integer> row = forest.get(cur.r);
 			row.set(cur.c, 1);
-			cur = getMin(forest, cur.r, cur.c);
-			val = getVal(forest, cur.r, cur.c);
+			rpos = cur.r;
+			cpos = cur.c;
 		}
-		if (isValid(forest)) {
-			return ans;
+		
+		if (!isValid(forest)) {
+			ans = -1;
 		}
-		return -1;
+		long timeTaken = System.currentTimeMillis() - start;
+		System.out.println("Time taken: "+timeTaken+" msecs");
+		return ans;
 	}
 
-	private Node getMin(List<List<Integer>> forest, int r, int c) {
+    private void sortNumbers(List<List<Integer>> forest, List<Integer> nums) {
+        for(List<Integer> row: forest) {
+            for(Integer tree : row) {
+                if(tree > 1) {
+                    nums.add(tree);
+                }
+            }
+        }
+        Collections.sort(nums);
+    }
+
+	private Node getNode(List<List<Integer>> forest, int r, int c, int dval) {
 		Node n = new Node(r, c, 0);
 		LinkedList<Node> q = new LinkedList<>();
 		Set<Node> visited = new HashSet<>();
 		q.add(n);
 		visited.add(n);
-		int ans = 1;
-		Node ansNode = n;
 		while (!q.isEmpty()) {
 			Node cur = q.removeFirst();
 			int val = getVal(forest, cur.r, cur.c);
 			if (val < 1) {
 				continue;
 			}
-			if (val > 1) {
-				if (ans == 1 || ans > val) {
-					ans = val;
-					ansNode = cur;
-				}
-			}
+            if (val == dval) {
+                return cur;
+            }
 			Node left = new Node(cur.r, cur.c - 1, cur.steps + 1);
 			Node right = new Node(cur.r, cur.c + 1, cur.steps + 1);
 			Node up = new Node(cur.r - 1, cur.c, cur.steps + 1);
@@ -69,7 +87,7 @@ public class CutTrees {
 				q.addLast(down);
 			}
 		}
-		return ansNode;
+		return null;
 	}
 
 	private int getVal(List<List<Integer>> forest, int r, int c) {
@@ -93,13 +111,13 @@ public class CutTrees {
 			this.r = r;
 			this.c = c;
 			this.steps = s;
-			// this.v = v;
 		}
 
 		@Override
 		public String toString() {
 			return this.r+" "+this.c+" "+this.steps;
 		}
+
 		@Override
 		public boolean equals(Object o) {
 			if (o instanceof Node) {
