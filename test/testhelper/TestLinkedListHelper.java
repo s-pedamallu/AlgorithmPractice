@@ -1,5 +1,11 @@
 package testhelper;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.util.Arrays;
+import java.util.List;
+
 import linkedlists.AddNumbers.ListNode;
 
 public class TestLinkedListHelper {
@@ -27,4 +33,21 @@ public class TestLinkedListHelper {
 		}
 	}
 
+	public static void validateListsNoOrder(List<List<Integer>> exp, List<List<Integer>> act) {
+		assertEquals(exp.size(), act.size());
+		for(int i=0; i<exp.size(); i++) {
+			Object[] earr = exp.get(i).toArray();
+			boolean found = false;
+			for(int j=0; j<act.size(); j++) {
+				Object[] aarr = act.get(j).toArray();
+				if(Arrays.deepEquals(earr, aarr)) {
+					found = true;
+					break;
+				}
+			}
+			if(!found) {
+				assertFalse("Not found "+exp.get(i)+" in the result", true);
+			}
+		}
+	}
 }

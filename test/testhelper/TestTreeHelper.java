@@ -21,7 +21,7 @@ public class TestTreeHelper {
 				node.left = left;
 				q.offerLast(left);
 			}
-			if(arr[count++] != null) {
+			if(count<arr.length && arr[count++] != null) {
 				TreeNode right = new TreeNode(arr[count-1]);
 				node.right = right;
 				q.offerLast(right);
