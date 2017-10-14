@@ -3,7 +3,7 @@ package arrays;
 public class ShiftedArraySearch {
 
 
-	  static int shiftedArrSearch(int[] shiftArr, int num) {
+	  int shiftedArrSearch2(int[] shiftArr, int num) {
 	    // your code goes here
 	    int result = -1;
 	    if(shiftArr == null || shiftArr.length==0) {
@@ -35,9 +35,27 @@ public class ShiftedArraySearch {
 	    }
 	    return -1;
 	  }
-	  
+
+	public int shiftedArrSearch(int[] nums, int target) {
+		int l = 0;
+		int r = nums.length - 1;
+		while (l <= r) {
+			int m = (l + r) / 2;
+			if (nums[m] == target) {
+				return m;
+			} else if ((nums[m] > nums[l] && target < nums[m] && target >= nums[l])
+					|| (nums[m] < nums[l] && (target < nums[m] || target >= nums[l]))) {
+				r = m - 1;
+			} else {
+				l = m + 1;
+			}
+		}
+		return -1;
+	}
+
 	  public static void main(String[] args) {
+		  ShiftedArraySearch obj = new ShiftedArraySearch();
 		  int[] arr = {1,2};
-		  System.out.println(ShiftedArraySearch.shiftedArrSearch(arr, 2));
+		  System.out.println(obj.shiftedArrSearch(arr, 2));
 	  }	
 }

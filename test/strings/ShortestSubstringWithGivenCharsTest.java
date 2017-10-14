@@ -24,4 +24,10 @@ public class ShortestSubstringWithGivenCharsTest {
 		char[] arr = {'m','r','e','s'};
 		assertEquals("september", src.substringWithChars("september", arr));
 	}
+
+	@Test
+	public void test3() {
+		char[] arr = {'m','r','e','v'};
+		assertEquals("", src.substringWithChars("september", arr));
+	}
 }

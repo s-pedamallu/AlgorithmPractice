@@ -1,6 +1,8 @@
 package testhelper;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import iterators.BSTIterator.TreeNode;
 
@@ -28,5 +30,30 @@ public class TestTreeHelper {
 			}
 		}
 		return root;
+	}
+
+	public static Integer[] buildArrayFromTree(TreeNode tree) {
+		List<Integer> list = new ArrayList<>();
+		LinkedList<TreeNode> q = new LinkedList<>();
+		q.addLast(tree);
+		while(!q.isEmpty()) {
+			TreeNode n = q.removeFirst();
+			if(n == null) {
+				list.add(null);
+				continue;
+			}
+			list.add(n.val);
+			q.addLast(n.left);
+			q.addLast(n.right);
+		}
+		// Delete trailing nulls
+		while(list.get(list.size()-1) == null) {
+			list.remove(list.size()-1);
+		}
+		Integer[] result = new Integer[list.size()];
+		for(int i=0; i<list.size(); i++) {
+			result[i] = list.get(i);
+		}
+		return result;
 	}
 }
