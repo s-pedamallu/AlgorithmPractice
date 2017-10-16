@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class CutTrees {
@@ -16,20 +17,20 @@ public class CutTrees {
 	public int cutOffTree(List<List<Integer>> forest) {
 		long start = System.currentTimeMillis();
 		int ans = 0;
-        List<NodeVal> nums = new ArrayList<>();        
-        sortNumbers(forest, nums);
-        if(nums.size() != numReachableNodes(forest, 0, 0)) {
-        	return -1;
-        }
+        PriorityQueue<NodeVal> nums = new PriorityQueue<>();        
+        getOrderedTrees(forest, nums);
         int rpos = 0;
         int cpos = 0;
-		for(int i=0; i<nums.size(); i++) {
-			NodeVal cur = nums.get(i);
-			int steps = Math.abs(rpos-cur.r)+Math.abs(cpos-cur.c);
+		while(!nums.isEmpty()) {
+			NodeVal cur = nums.poll();
+			int steps = numSteps(forest, rpos, cpos, cur.r, cur.c);
 //			Node cur = getNode(forest, rpos, cpos, nums.get(i));
 //			if(cur == null) {
 //				break;
 //			}
+			if(steps < 0) {
+				return -1;
+			}
 			ans += steps;
 			rpos = cur.r;
 			cpos = cur.c;
@@ -56,7 +57,7 @@ public class CutTrees {
 		}
 	}
 	
-    private void sortNumbers(List<List<Integer>> forest, List<NodeVal> nums) {
+    private void getOrderedTrees(List<List<Integer>> forest, PriorityQueue<NodeVal> nums) {
     	for(int i=0; i<forest.size(); i++) {
     		List<Integer> row = forest.get(i);
             for(int c=0; c<row.size(); c++) {
@@ -66,24 +67,22 @@ public class CutTrees {
                 }
             }
         }
-        Collections.sort(nums);
     }
 
-	private int numReachableNodes(List<List<Integer>> forest, int r, int c) {
+	private int numSteps(List<List<Integer>> forest, int r, int c, int dr, int dc) {
 		Node n = new Node(r, c, 0);
 		LinkedList<Node> q = new LinkedList<>();
 		Set<Node> visited = new HashSet<>();
 		q.add(n);
-		int ans = 0;
 		visited.add(n);
 		while (!q.isEmpty()) {
 			Node cur = q.removeFirst();
 			int val = getVal(forest, cur.r, cur.c);
 			if (val < 1) {
 				continue;
-			} else if(val>1) {
+			} else if(cur.r == dr && cur.c==dc) {
 //				System.out.println(cur.r+" "+cur.c+" "+val);
-				ans++;
+				return cur.steps;
 			}
 			Node left = new Node(cur.r, cur.c - 1, cur.steps + 1);
 			Node right = new Node(cur.r, cur.c + 1, cur.steps + 1);
@@ -106,7 +105,7 @@ public class CutTrees {
 				q.addLast(down);
 			}
 		}
-		return ans;
+		return -1;
 	}
 
 	private int getVal(List<List<Integer>> forest, int r, int c) {

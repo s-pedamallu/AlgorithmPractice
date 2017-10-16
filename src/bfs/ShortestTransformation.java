@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Question Link:
+ * https://leetcode.com/problems/word-ladder/description/
+ * @author spedamallu
+ *
+ */
 public class ShortestTransformation {
 	public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 		wordList.add(beginWord);
@@ -30,7 +36,7 @@ public class ShortestTransformation {
 		// BFS
 		Set<String> visited = new HashSet<>();
 		LinkedList<BFSNode> q = new LinkedList<>();
-		q.addLast(new BFSNode(beginWord, 0));
+		q.addLast(new BFSNode(beginWord, 1));
 		visited.add(beginWord);
 		while (!q.isEmpty()) {
 			BFSNode node = q.removeFirst();
@@ -45,6 +51,78 @@ public class ShortestTransformation {
 					}
 				}
 			}
+		}
+		return 0;
+	}
+
+	public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
+		if(!wordList.contains(endWord)) {
+			return 0;
+		}
+
+		// BFS
+		Set<String> visited = new HashSet<>();
+		LinkedList<BFSNode> q = new LinkedList<>();
+		q.addLast(new BFSNode(beginWord, 1));
+		visited.add(beginWord);
+		while (!q.isEmpty()) {
+			BFSNode node = q.removeFirst();
+			for (int i = 0; i < node.s.length(); i++) {
+				for (int j = 0; j < 26; j++) {
+					char[] chars = node.s.toCharArray();
+					chars[i] = (char) ('a' + j);
+					String ns = new String(chars);
+					if (ns.equals(endWord)) {
+						return node.level + 1;
+					} else if (!visited.contains(ns) && wordList.contains(ns)) {
+						visited.add(ns);
+						q.addLast(new BFSNode(ns, node.level + 1));
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+		Set<String> topSet = new HashSet<>();
+		Set<String> visited = new HashSet<>();
+		Set<String> bottomSet = new HashSet<>();
+
+		if(!wordList.contains(endWord)) {
+			return 0;
+		}
+		topSet.add(beginWord);
+		bottomSet.add(endWord);
+		visited.add(beginWord);
+		int level = 1;
+		while (!topSet.isEmpty()) {
+			if(topSet.size() > bottomSet.size()) {
+				Set<String> tmp = bottomSet;
+				bottomSet = topSet;
+				topSet = tmp;
+			}
+
+			Set<String> next = new HashSet<>();
+			for (String s : topSet) {
+				char[] chars = s.toCharArray();
+				for (int i = 0; i < s.length(); i++) {
+					for (char c = 'a'; c<='z'; c++) {
+						char old = chars[i];
+						chars[i] = c;
+						String ns = new String(chars);
+						if(bottomSet.contains(ns)) {
+							return level + 1;
+						} else if(!visited.contains(ns) && wordList.contains(ns)) {
+							next.add(ns);
+							visited.add(ns);
+						}
+						chars[i] = old;
+					}
+				}
+			}
+			topSet = next;
+			level++;
 		}
 		return 0;
 	}
