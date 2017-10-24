@@ -16,37 +16,78 @@ public class HostCrowding {
             resultList.add(new Result(s));
         }
         Collections.sort(resultList);
-        Iterator<Result> itr = resultList.iterator();
         HashSet<Integer> hostsInPage = new HashSet<>();
         List<String> ans = new ArrayList<>();
         int pageCount = 0;
-        while(itr.hasNext()) {
-            Result r = itr.next();
-            if(hostsInPage.contains(r.host_id)) {
-                continue;
-            } else {
-                ans.add(r.raw);
-                itr.remove();
-                pageCount++;
-                hostsInPage.add(r.host_id);
-                if(pageCount == num) {
-                    pageCount = 0;
-                    hostsInPage = new HashSet<>();
-                    itr = resultList.iterator();
-                    ans.add("");
-                }
-            }
-        }
-        for(Result r : resultList) {
-            ans.add(r.raw);
-            pageCount++;
-            if(pageCount == num) {
-                pageCount = 0;
-                ans.add("");
-            }
-        }
+		while (!resultList.isEmpty()) {
+			Iterator<Result> itr = resultList.iterator();
+			hostsInPage = new HashSet<>();
+			while (itr.hasNext()) {
+				Result r = itr.next();
+				if (hostsInPage.contains(r.host_id)) {
+					continue;
+				} else {
+					ans.add(r.raw);
+					itr.remove();
+					pageCount++;
+					hostsInPage.add(r.host_id);
+					if (pageCount == num) {
+						pageCount = 0;
+						hostsInPage = new HashSet<>();
+						itr = resultList.iterator();
+						ans.add("");
+					}
+				}
+			}
+		}
         String[] finalResult = ans.toArray(new String[resultList.size()]);      
         return finalResult;
+    }
+
+
+    static String[] paginate2(int num, String[] results) {
+    	if(results == null || results.length == 0 || num <= 0) {
+    		String[] empty = {};
+    		return empty;
+    	}
+    	String[] paginatedResult = new String[results.length + results.length/num];
+    	int counter = 0;
+    	int pageCount = 0;
+        HashSet<Integer> hostsInPage = new HashSet<>();
+    	for(int i = 0; i<results.length; i++) {
+    		if(pageCount == num) {
+    			paginatedResult[counter++] = "";
+    			pageCount = 0;
+    			i=-1;
+    			hostsInPage = new HashSet<>();
+    			continue;
+    		}
+    		if("".equals(results[i])) {
+    			continue;
+    		}
+    		String[] tokens = results[i].split(",");
+    		int host_id = Integer.valueOf(tokens[0]);
+    		if(hostsInPage.contains(host_id)) {
+    			continue;
+    		}
+    		hostsInPage.add(host_id);
+    		paginatedResult[counter++] = results[i];
+    		results[i] = "";
+    		pageCount++;
+    	}
+    	
+        for(String r : results) {
+        	if("".equals(r)) {
+        		continue;
+        	}
+            if(pageCount == num) {
+                paginatedResult[counter++] = "";
+                pageCount = 0;
+            }
+            paginatedResult[counter++] = r;
+            pageCount++;
+        }
+        return paginatedResult;
     }
 
     static class Result implements Comparable<Result>{
