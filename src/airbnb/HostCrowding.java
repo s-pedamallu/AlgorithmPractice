@@ -117,7 +117,76 @@ public class HostCrowding {
             }
         }
     }
-    
+
+    /*
+Sample Input 1:
+5 13
+1,28,300.6,San Francisco
+4,5,209.1,San Francisco
+20,7,203.4,Oakland
+6,8,202.9,San Francisco
+6,10,199.8,San Francisco
+1,16,190.5,San Francisco
+6,29,185.3,San Francisco
+7,20,180.0,Oakland
+6,21,162.2,San Francisco
+2,18,161.7,San Jose
+2,30,149.8,San Jose
+3,76,146.7,San Francisco
+2,14,141.8,San Jose
+
+Expected output 1:
+1,28,300.6,San Francisco
+4,5,209.1,San Francisco
+20,7,203.4,Oakland
+6,8,202.9,San Francisco
+7,20,180.0,Oakland
+
+6,10,199.8,San Francisco
+1,16,190.5,San Francisco
+2,18,161.7,San Jose
+3,76,146.7,San Francisco
+6,29,185.3,San Francisco
+
+6,21,162.2,San Francisco
+2,30,149.8,San Jose
+2,14,141.8,San Jose
+------------------
+Sample Input 2:
+5 14
+1,28,300.6,San Francisco
+4,5,209.1,San Francisco
+20,7,203.4,Oakland
+6,8,202.9,San Francisco
+6,10,199.8,San Francisco
+1,16,190.5,San Francisco
+6,29,185.3,San Francisco
+7,20,180.0,Oakland
+6,21,162.2,San Francisco
+2,18,161.7,San Jose
+2,30,149.8,San Jose
+3,76,146.7,San Francisco
+2,14,141.8,San Jose
+3,45,139.6,Fremont
+
+Expected output 2:
+1,28,300.6,San Francisco
+4,5,209.1,San Francisco
+20,7,203.4,Oakland
+6,8,202.9,San Francisco
+7,20,180.0,Oakland
+
+6,10,199.8,San Francisco
+1,16,190.5,San Francisco
+2,18,161.7,San Jose
+3,76,146.7,San Francisco
+6,29,185.3,San Francisco
+
+6,21,162.2,San Francisco
+2,30,149.8,San Jose
+3,45,139.6,Fremont
+2,14,141.8,San Jose
+     */
     public static void main(String[] a) throws IOException {
     	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	String line = br.readLine();

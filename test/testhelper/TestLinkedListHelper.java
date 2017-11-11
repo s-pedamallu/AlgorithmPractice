@@ -50,4 +50,16 @@ public class TestLinkedListHelper {
 			}
 		}
 	}
+
+	public static void validateListsInOrder(List<List<Integer>> exp, List<List<Integer>> act) {
+		assertEquals("Size of the expected array did not match with the actual output array", exp.size(), act.size());
+		for (int i = 0; i < exp.size(); i++) {
+			Object[] earr = exp.get(i).toArray();
+			Object[] aarr = act.get(i).toArray();
+			if (!Arrays.deepEquals(earr, aarr)) {
+				assertFalse("Expected " + exp.get(i) + ", but found " + act.get(i) + " at pos " + i, true);
+				break;
+			}
+		}
+	}
 }
