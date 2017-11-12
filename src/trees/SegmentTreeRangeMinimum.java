@@ -22,11 +22,27 @@ public class SegmentTreeRangeMinimum {
 		return recursiveGetMin(fromIdx, toIdx, 0, srcArrLength-1, 0);
 	}
 
+	public void updateIndex(int idx, int newVal) {
+		recursiveUpdateIndex(idx, 0, srcArrLength-1, 0, newVal);
+	}
+
+	private int recursiveUpdateIndex(int idx, int rangeFrom, int rangeTo, int cur, int newVal) {
+		if(rangeFrom == idx && rangeTo == idx) { // leaf
+			segmentTree[cur] = newVal;
+		} else if(inRange(idx, rangeFrom, rangeTo)) { // in path
+			int mid = (rangeFrom + rangeTo) / 2;
+			segmentTree[cur] = Math.min(recursiveUpdateIndex(idx, rangeFrom, mid, cur*2+1, newVal),
+			recursiveUpdateIndex(idx, mid + 1, rangeTo, cur*2+2, newVal));
+		}
+		return segmentTree[cur];		
+	}
+
 	private int recursiveGetMin(int from, int to, int rangeFrom, int rangeTo, int cur) {
-		if(rangeFrom>=from && rangeTo<=to) { 		// total overlap
+		if (rangeFrom >= from && rangeTo <= to) { // total overlap
 			return segmentTree[cur];
-		} else if(inRange(from, rangeFrom, rangeTo) || inRange(to, rangeFrom, rangeTo)) {	// partial overlap
-			int mid = (rangeFrom+rangeTo)/2;
+		} else if (inRange(from, rangeFrom, rangeTo) || 
+				inRange(to, rangeFrom, rangeTo)) { // partial overlap
+			int mid = (rangeFrom + rangeTo) / 2;
 			return Math.min(recursiveGetMin(from, to, rangeFrom, mid, 2 * cur + 1),
 					recursiveGetMin(from, to, mid + 1, rangeTo, 2 * cur + 2));
 		} else { // no overlap

@@ -15,4 +15,16 @@ public class SegmentTreeRangeMinimumTest {
 		assertEquals(4, src.getMin(4, 5));
 		assertEquals(2, src.getMin(0, 0));
 	}
+
+	@Test
+	public void test2() {
+		int[] input = { 2, 1, 9, -8, 6, 4, 0 };
+		src = new SegmentTreeRangeMinimum(input);
+		assertEquals(1, src.getMin(0, 2));
+		assertEquals(-8, src.getMin(1, 5));
+		src.updateIndex(3, 3);
+		assertEquals(1, src.getMin(1, 5));
+		src.updateIndex(3, -8);
+		assertEquals(-8, src.getMin(1, 5));
+	}
 }
