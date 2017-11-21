@@ -8,7 +8,7 @@ public class SegmentTreeRangeMinimum {
 	SegmentTreeRangeMinimum(int[] src) {
 		srcArrLength = src.length;
 		int mask = 1;
-		while(mask <= src.length) {
+		while(mask < src.length) {
 			mask<<=1;
 		}
 		segmentTree = new int[2*mask-1];
