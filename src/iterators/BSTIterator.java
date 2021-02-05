@@ -13,6 +13,10 @@ public class BSTIterator {
 		public TreeNode(int x) {
 			val = x;
 		}
+
+		public String toString() {
+			return String.valueOf(val);
+		}
 	}
 	 
 	private Stack<TreeNode> heightStack;
