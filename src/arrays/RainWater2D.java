@@ -12,13 +12,14 @@ public class RainWater2D {
         Stack<Integer> stack = new Stack<>();
         stack.push(0);
         for(int i=1; i<height.length; i++) {
-        	int popIndex = -1;
-            while(!stack.isEmpty() && height[stack.peek()] <= height[i]) {
-                popIndex = stack.pop();
+        	int popIdx = -1;
+            while(!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                popIdx = stack.pop();
             }
-            if(popIndex != -1) {
-                int fillHeight=Math.min(height[i], height[popIndex]);
-                for(int j=popIndex+1; j<i;j++) {
+            if(popIdx!=-1 || !stack.isEmpty()) {
+            	popIdx = stack.isEmpty() ? popIdx : stack.peek();
+                int fillHeight=Math.min(height[i], height[popIdx]);
+                for(int j=popIdx+1; j<i;j++) {
                     ans += fillHeight - height[j];
                     height[j] = fillHeight;
                 }                
