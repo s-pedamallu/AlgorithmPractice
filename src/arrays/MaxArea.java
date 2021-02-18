@@ -1,9 +1,27 @@
 package arrays;
 
-public class MaxArea {
+/**
+ * Prob: https://leetcode.com/problems/container-with-most-water/
+ */
+public class MaxArea {	
 	
 	public int maxArea(int[] height) {
-		return maxAreaBruteForce(height);
+		return maxAreaOptimized(height);
+	}
+	
+	private int maxAreaOptimized(int[] height) {
+		int s = 0;
+		int e = height.length-1;
+		int ans = Integer.MIN_VALUE;
+		while(e-s>0) {
+			ans = Math.max(ans, Math.min(height[s], height[e])*(e-s));
+			if(height[s]<=height[e]) {
+				s++;
+			} else {
+				e--;
+			}
+		}
+		return ans;
 	}
 
 	private int maxAreaBruteForce(int[] height) {

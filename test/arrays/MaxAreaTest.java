@@ -49,4 +49,10 @@ public class MaxAreaTest {
 		int[] arr = {7,6,5,4,3,2,1};
 		assertEquals(12, obj.maxArea(arr));
 	}
+	
+	@Test
+	public void test7() {
+		int[] arr = {3,1,3,1,1,1,1,1,1,1,1};
+		assertEquals(10, obj.maxArea(arr));
+	}
 }
