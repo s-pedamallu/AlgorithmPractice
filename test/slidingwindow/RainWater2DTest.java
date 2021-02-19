@@ -1,4 +1,4 @@
-package arrays;
+package slidingwindow;
 
 import static org.junit.Assert.assertEquals;
 
