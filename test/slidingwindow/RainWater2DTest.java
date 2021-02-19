@@ -37,4 +37,10 @@ public class RainWater2DTest {
 		int[] arr = {0,1,0,2,1,0,1,3,2,1,2,1};
 		assertEquals(6, obj.trap(arr));
 	}
+
+	@Test
+	public void test5() {
+		int[] arr = {0,2,1,1,1,3};
+		assertEquals(3, obj.trap(arr));
+	}
 }
