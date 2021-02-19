@@ -1,4 +1,4 @@
-package arrays;
+package slidingwindow;
 
 /**
  * Prob: https://leetcode.com/problems/container-with-most-water/
