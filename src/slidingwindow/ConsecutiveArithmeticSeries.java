@@ -1,5 +1,8 @@
 package slidingwindow;
 
+/**
+ * https://leetcode.com/problems/arithmetic-slices/
+ */
 public class ConsecutiveArithmeticSeries {
 	
     public int numberOfArithmeticSlices(int[] A) {
